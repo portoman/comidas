@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #eef6f1;
+  --color-brand-100: #d5e9dd;
+  --color-brand-200: #a9d2bb;
+  --color-brand-500: #2f7a55;
+  --color-brand-600: #24613f;
+  --color-brand-700: #1d4f35;
+  --color-brand-800: #173f2b;
+  --color-brand-900: #10301f;
+  --color-cream: #faf7f0;
+  --color-cream-dark: #f1ebdd;
+  --color-ink: #1c2420;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Espacio inferior para la barra de navegación fija + zona segura del iPhone */
+.pb-nav {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .pb-nav {
+    padding-bottom: 2rem;
+  }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
