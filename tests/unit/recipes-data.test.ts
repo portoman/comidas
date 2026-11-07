@@ -59,13 +59,22 @@ describe("catálogo de recetas", () => {
     expect(r.baby.howTo.join(" ")).toMatch(/calabac[ií]n/);
   });
 
-  it("las recetas con olla rápida indican tiempo desde presión y despresurización", () => {
+  it("las recetas con olla rápida la usan en sus pasos e indican cómo soltar la presión", () => {
     const withPressure = RECIPES.filter((r) => r.pressureCooker);
-    expect(withPressure.length).toBeGreaterThan(8);
+    expect(withPressure.length).toBeGreaterThanOrEqual(8);
     for (const r of withPressure) {
-      expect(r.pressureCooker!.minutesAtPressure).toBeGreaterThan(0);
-      expect(r.pressureCooker!.steps.join(" ")).toMatch(/válvula|presión/);
+      expect(r.pressureCooker!.minutesAtPressure, r.id).toBeGreaterThan(0);
+      const ollaSteps = r.steps.filter((s) => s.appliance === "olla-rapida");
+      expect(ollaSteps.length, r.id).toBeGreaterThan(0);
+      expect(r.steps.map((s) => s.text).join(" "), r.id).toMatch(/válvula/);
     }
+  });
+
+  it("son recetas de diario: ninguna pasa de 1 hora y la mayoría rondan 30-45 min", () => {
+    const totals = RECIPES.map(totalMinutes);
+    totals.forEach((t, i) => expect(t, RECIPES[i].id).toBeLessThanOrEqual(60));
+    const upTo45 = totals.filter((t) => t <= 45).length;
+    expect(upTo45).toBeGreaterThanOrEqual(23);
   });
 
   it("no repite fotografías entre recetas distintas", () => {

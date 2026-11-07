@@ -70,13 +70,17 @@ export interface RecipeStep {
   appliance?: Appliance;
 }
 
+/**
+ * Datos de la olla rápida cuando la receta se cocina con ella. Los pasos
+ * principales de la receta ya están escritos para la olla (appliance
+ * "olla-rapida") y los tiempos de la receta lo tienen en cuenta.
+ */
 export interface PressureCookerInfo {
   /** Minutos desde que la olla alcanza la presión. */
   minutesAtPressure: number;
   /** Nivel de presión recomendado. */
   pressure: "alta" | "baja";
   release: "natural" | "rápida" | "mixta";
-  steps: string[];
 }
 
 export type CategoryId =
@@ -114,13 +118,17 @@ export interface Recipe {
   summary: string;
   /** null = fotografía pendiente: se muestra un marcador visual. */
   image: RecipeImage | null;
+  /** Minutos de preparación (cortar, pelar…). */
   prepMinutes: number;
+  /** Minutos de cocción, incluidos subir y bajar la presión de la olla. */
   cookMinutes: number;
   /** Raciones base: 2 adultos + 1 ración de bebé = 3. */
   servings: number;
   ingredients: RecipeIngredient[];
   steps: RecipeStep[];
   pressureCooker?: PressureCookerInfo;
+  /** Cómo hacerla sin olla rápida (u otra variante), en pocas frases. */
+  alternative?: string;
   baby: BabyAdaptation;
   freezable: boolean;
   freezingNotes: string;

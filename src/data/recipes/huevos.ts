@@ -1,5 +1,5 @@
 import type { Recipe } from "../types";
-import { BABY, ing, PRESSURE_SAFETY } from "./helpers";
+import { BABY, ing } from "./helpers";
 
 const eggStorage = [
   "Guarda la tortilla en la nevera en cuanto esté templada (menos de 2 horas), tapada con film o en recipiente hermético.",
@@ -15,39 +15,29 @@ export const huevosRecipes: Recipe[] = [
     category: "huevos",
     summary: "Tortilla jugosa con patata y calabacín pochados a fuego lento, más ligera que la clásica.",
     image: null,
-    prepMinutes: 15,
-    cookMinutes: 35,
+    prepMinutes: 10,
+    cookMinutes: 20,
     servings: 3,
     ingredients: [
       ing("huevo", 5, "ud", "grandes (L)"),
-      ing("patata", 500, "g", "en láminas finas de 3 mm"),
-      ing("calabacin", 1, "ud", "en medias lunas finas de 3 mm"),
+      ing("patata", 500, "g", "en dados de 2 cm"),
+      ing("calabacin", 1, "ud", "en dados de 1,5 cm"),
       ing("cebolla", 0.5, "ud", "en juliana fina", true),
-      ing("aceite-oliva", 6, "cda", "para pochar (se recupera parte)"),
+      ing("aceite-oliva", 2, "cda"),
       ing("sal", undefined, "al-gusto"),
     ],
     steps: [
-      { text: "Pela las patatas y córtalas en láminas finas de unos 3 mm. Corta el calabacín por la mitad a lo largo y luego en medias lunas de 3 mm." },
-      { text: "Calienta el aceite en una sartén antiadherente de 22-24 cm a fuego medio (5 de 9). Añade la patata y la cebolla. Deben cocerse lentamente en el aceite, burbujeando suave, sin freírse: 12 minutos, removiendo cada 3 minutos.", minutes: 12, appliance: "vitro" },
-      { text: "Añade el calabacín y cocina 8-10 minutos más, hasta que la patata se rompa al presionarla con la espátula y el calabacín esté tierno.", minutes: 9, appliance: "vitro" },
-      { text: "Escurre las verduras en un colador sobre un bol para recuperar el aceite (sírvete de él para otras recetas)." },
-      { text: "Bate los huevos en un bol grande. Añade las verduras calientes, mezcla y deja reposar 5 minutos: la patata absorbe el huevo y la tortilla queda más jugosa. En este momento puedes separar una parte para hacer una tortilla pequeña para el bebé sin sal y salar el resto." },
-      { text: "Calienta 1 cucharada del aceite recuperado en la sartén a fuego medio. Vierte la mezcla y cuaja 4 minutos, despegando los bordes con la espátula y moviendo la sartén en círculos." },
-      { text: "Coloca un plato llano más grande que la sartén encima, sujétalo firmemente y da la vuelta con un gesto rápido. Desliza la tortilla de nuevo a la sartén y cuaja 3-4 minutos por el otro lado.", minutes: 8, appliance: "vitro" },
-      { text: "Para el bebé debe quedar totalmente cuajada: presiona el centro con un dedo o pincha con un cuchillo, que debe salir limpio, sin huevo líquido. Si la familia la prefiere jugosa, saca la ración del bebé y cuájala 2-3 minutos más tapada a fuego suave o 30 segundos en el microondas." },
+      { text: "Pela las patatas y córtalas en dados de 2 cm. Corta el calabacín en dados de 1,5 cm y la cebolla en juliana fina." },
+      { text: "Pon las verduras en el cestillo de la olla rápida con el agua mínima que indique el fabricante (suele ser 200-250 ml), sin que el agua toque el cestillo. Si no tienes cestillo, ponlas directamente con 200 ml de agua." },
+      { text: "Cierra a fuego máximo. Cuando suba la válvula (presión alta), baja el fuego y cuenta 3 minutos. Retira del fuego y suelta la presión girando la válvula con un trapo, con la cara apartada.", minutes: 8, appliance: "olla-rapida" },
+      { text: "Comprueba que la patata se aplasta con un tenedor. Escúrrelo todo muy bien (el agua hace la tortilla blanda) y aplasta ligeramente la patata." },
+      { text: "Bate los huevos en un bol grande. Añade las verduras calientes, mezcla y deja reposar 3 minutos: la patata absorbe el huevo y la tortilla queda más jugosa. Si quieres, separa una parte para una tortilla pequeña del bebé sin sal y sala el resto." },
+      { text: "Calienta el aceite en una sartén antiadherente de 22-24 cm a fuego medio (5 de 9). Vierte la mezcla y cuaja 4 minutos, despegando los bordes con la espátula y moviendo la sartén en círculos.", minutes: 4, appliance: "vitro" },
+      { text: "Coloca un plato llano más grande que la sartén encima, sujétalo firmemente y da la vuelta con un gesto rápido. Desliza la tortilla de nuevo a la sartén y cuaja 3-4 minutos por el otro lado.", minutes: 4, appliance: "vitro" },
+      { text: "Para el bebé debe quedar totalmente cuajada: pincha el centro con un cuchillo, que debe salir limpio, sin huevo líquido. Si la familia la prefiere jugosa, saca la ración del bebé y cuájala 2-3 minutos más tapada a fuego suave o 30 segundos en el microondas." },
     ],
-    pressureCooker: {
-      minutesAtPressure: 3,
-      pressure: "alta",
-      release: "rápida",
-      steps: [
-        "Versión con poco aceite: corta la patata en dados de 2 cm y el calabacín en dados de 1,5 cm.",
-        "Ponlos en el cestillo de la olla con el agua mínima que indique el fabricante (suele ser 200-250 ml), sin que el agua toque el cestillo.",
-        "Cierra y, al alcanzar presión alta, cuenta 2-3 minutos. Retira del fuego y libera la presión con cuidado.",
-        "Comprueba que la patata se aplasta con un tenedor. Escúrrelo todo muy bien, aplasta ligeramente la patata y sigue desde el paso 5 (batir los huevos y mezclar) usando solo 1 cucharada de aceite para cuajar.",
-        PRESSURE_SAFETY,
-      ],
-    },
+    pressureCooker: { minutesAtPressure: 3, pressure: "alta", release: "rápida" },
+    alternative: "Versión clásica: pocha la patata en láminas finas y la cebolla en 6 cucharadas de aceite a fuego medio 12 minutos, añade el calabacín 8-10 minutos más, escurre el aceite y sigue desde el paso 5 (unos 45 minutos en total).",
     baby: {
       texture: "Tiras o dados de tortilla bien cuajada, blandos, para coger con la mano o aplastados.",
       howTo: [

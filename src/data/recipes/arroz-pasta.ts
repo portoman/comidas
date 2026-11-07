@@ -1,5 +1,5 @@
 import type { Recipe } from "../types";
-import { BABY, ing, PRESSURE_SAFETY, STORAGE } from "./helpers";
+import { BABY, ing, STORAGE } from "./helpers";
 
 export const arrozPastaRecipes: Recipe[] = [
   {
@@ -9,8 +9,8 @@ export const arrozPastaRecipes: Recipe[] = [
     category: "arroz-pasta",
     summary: "Salsa boloñesa casera de cocción lenta con verduras escondidas, sin vino.",
     image: null,
-    prepMinutes: 15,
-    cookMinutes: 45,
+    prepMinutes: 10,
+    cookMinutes: 30,
     servings: 3,
     ingredients: [
       ing("macarrones", 250, "g"),
@@ -28,9 +28,9 @@ export const arrozPastaRecipes: Recipe[] = [
     ],
     steps: [
       { text: "Pica la cebolla en dados muy pequeños y ralla la zanahoria (y el calabacín) con la parte fina del rallador: así se integran en la salsa y no se notan." },
-      { text: "Calienta el aceite en una cazuela a fuego medio (5 de 9). Sofríe cebolla y zanahoria 8 minutos hasta que estén blandas. Añade el ajo 1 minuto.", minutes: 9, appliance: "vitro" },
+      { text: "Calienta el aceite en una cazuela a fuego medio (5 de 9). Sofríe cebolla y zanahoria 6 minutos hasta que estén blandas. Añade el ajo 1 minuto. Pon a la vez a hervir el agua de la pasta.", minutes: 7, appliance: "vitro" },
       { text: "Sube a fuego medio-alto (7 de 9), añade la carne y deshazla con una cuchara de madera hasta que pierda por completo el color rosado, 6-7 minutos. Si suelta mucha agua, sigue cocinando hasta que se evapore y empiece a dorarse.", minutes: 7, appliance: "vitro" },
-      { text: "Añade el tomate, el orégano, el laurel y 100 ml de agua. Lleva a ebullición, baja a fuego suave (3 de 9) y cuece 25 minutos con la tapa entreabierta, removiendo cada 5 minutos. Debe quedar espesa, sin líquido suelto.", minutes: 25, appliance: "vitro" },
+      { text: "Añade el tomate, el orégano, el laurel y 100 ml de agua. Lleva a ebullición, baja a fuego medio-bajo (4 de 9) y cuece 15 minutos con la tapa entreabierta, removiendo cada 5 minutos, mientras se cuece la pasta. Debe quedar espesa, sin líquido suelto.", minutes: 15, appliance: "vitro" },
       { text: "Mientras, cuece los macarrones en 2,5 litros de agua hirviendo (sala solo si toda la pasta es para adultos; si no, cuécela sin sal y sala la salsa de los adultos). Cuece el tiempo del paquete más 1-2 minutos para la ración del bebé, que debe quedar muy tierna.", minutes: 12, appliance: "vitro" },
       { text: "Retira el laurel. Escurre la pasta reservando medio vaso de agua de cocción. Separa la ración del bebé y sala el resto de la salsa. Mezcla la pasta con la salsa, añadiendo un chorrito del agua reservada si queda seca. Sirve con queso rallado." },
     ],
@@ -54,8 +54,8 @@ export const arrozPastaRecipes: Recipe[] = [
     category: "arroz-pasta",
     summary: "Arroz cremoso de cuchara con pechuga de pavo, pimiento, judía verde y zanahoria.",
     image: null,
-    prepMinutes: 15,
-    cookMinutes: 30,
+    prepMinutes: 10,
+    cookMinutes: 25,
     servings: 3,
     ingredients: [
       ing("arroz-redondo", 200, "g"),
@@ -72,24 +72,16 @@ export const arrozPastaRecipes: Recipe[] = [
       ing("sal", undefined, "al-gusto"),
     ],
     steps: [
-      { text: "Calienta 1 litro de agua en un cazo y mantenla caliente a fuego bajo." , appliance: "vitro" },
-      { text: "En una cazuela baja con 1 cucharada de aceite a fuego medio-alto (7 de 9), saltea el pavo 3 minutos hasta que esté blanco por fuera. Sácalo.", minutes: 3, appliance: "vitro" },
-      { text: "Añade el resto del aceite y, a fuego medio, sofríe la cebolla, el pimiento, la zanahoria y la judía verde 10 minutos, removiendo. Añade el ajo 1 minuto. Fuera del fuego, añade el pimentón y el tomate rallado; vuelve al fuego y cocina 4 minutos.", minutes: 15, appliance: "vitro" },
-      { text: "Añade el arroz y la cúrcuma y nacara 1 minuto removiendo. Vierte 800 ml del agua caliente y devuelve el pavo.", minutes: 1, appliance: "vitro" },
-      { text: "Cuece 18 minutos a fuego medio-bajo (4 de 9), removiendo cada 3-4 minutos. Al remover, el arroz suelta almidón y queda meloso. Añade más agua caliente si se queda seco: debe tener textura de risotto, que se extienda despacio en el plato.", minutes: 18, appliance: "vitro" },
-      { text: "Prueba el grano: tierno por fuera, con un punto mínimo en el centro. Separa la ración del bebé y cuécela 2 minutos más con un chorrito de agua. Sala el resto y deja reposar 2 minutos." },
+      { text: "Calienta 650 ml de agua en un cazo o en el microondas.", appliance: "vitro" },
+      { text: "Corta el pavo en dados de 1,5 cm, el pimiento en dados de 1 cm, la judía verde en trozos de 1 cm y la zanahoria en dados de 0,5 cm. Pica la cebolla y el ajo y ralla el tomate." },
+      { text: "En la olla rápida destapada, con 1 cucharada de aceite a fuego medio-alto (7 de 9), saltea el pavo 3 minutos hasta que esté blanco por fuera. Sácalo.", minutes: 3, appliance: "olla-rapida" },
+      { text: "Añade el resto del aceite y, a fuego medio, sofríe la cebolla, el pimiento, la zanahoria y la judía verde 6 minutos. Añade el ajo 1 minuto. Fuera del fuego, añade el pimentón y el tomate; vuelve al fuego 2 minutos.", minutes: 9, appliance: "olla-rapida" },
+      { text: "Añade el arroz y la cúrcuma y remueve 1 minuto. Vierte el agua caliente, devuelve el pavo y remueve para despegar el fondo. Cierra a fuego máximo.", minutes: 1, appliance: "olla-rapida" },
+      { text: "Cuando suba la válvula (presión alta), baja a fuego medio-bajo y cuenta 6 minutos. Retira del fuego, espera 3 minutos y suelta el resto de la presión poco a poco girando la válvula con un trapo.", minutes: 12, appliance: "olla-rapida" },
+      { text: "Abre y remueve con energía 1 minuto: el arroz suelta almidón y queda meloso, con textura de risotto. Si está espeso, añade agua caliente. Separa la ración del bebé y sala el resto." },
     ],
-    pressureCooker: {
-      minutesAtPressure: 6,
-      pressure: "alta",
-      release: "mixta",
-      steps: [
-        "Haz los pasos 2 a 4 en la olla destapada usando solo 650 ml de agua caliente.",
-        "Cierra y, al alcanzar presión alta, cuenta 6 minutos. Retira del fuego, espera 3 minutos y libera el resto de presión poco a poco.",
-        "Abre, remueve 1 minuto con energía y ajusta con agua caliente si hace falta.",
-        PRESSURE_SAFETY,
-      ],
-    },
+    pressureCooker: { minutesAtPressure: 6, pressure: "alta", release: "mixta" },
+    alternative: "Sin olla rápida: usa 800 ml de agua y cuece en cazuela baja 18 minutos a fuego medio-bajo, removiendo cada 3-4 minutos (unos 45 minutos en total).",
     baby: {
       texture: "Arroz meloso muy tierno con pavo picado fino y verduras aplastadas.",
       howTo: [
@@ -110,7 +102,7 @@ export const arrozPastaRecipes: Recipe[] = [
     category: "arroz-pasta",
     summary: "Arroz caldoso-meloso con dados de merluza añadidos al final para que queden jugosos.",
     image: null,
-    prepMinutes: 15,
+    prepMinutes: 10,
     cookMinutes: 30,
     servings: 3,
     ingredients: [
@@ -127,9 +119,9 @@ export const arrozPastaRecipes: Recipe[] = [
       ing("sal", undefined, "al-gusto"),
     ],
     steps: [
-      { text: "Calienta 1 litro de agua en un cazo. Si la pescadería te da las espinas y la cabeza de la merluza, cuécelas 15 minutos en ese agua con media cebolla y cuela: tendrás un caldo casero sin sal." , minutes: 15, appliance: "vitro" },
+      { text: "Calienta 1 litro de agua en un cazo. Si tienes caldo de pescado casero sin sal congelado, úsalo en su lugar: da mucho sabor.", appliance: "vitro" },
       { text: "Revisa los dados de merluza con los dedos por si queda alguna espina y resérvalos en la nevera." },
-      { text: "En una cazuela baja con el aceite a fuego medio (5 de 9), sofríe la cebolla y el pimiento 10 minutos. Añade el ajo 1 minuto. Fuera del fuego, añade el pimentón y el tomate. Cocina 5 minutos hasta que el tomate se oscurezca.", minutes: 16, appliance: "vitro" },
+      { text: "En una cazuela baja con el aceite a fuego medio (5 de 9), sofríe la cebolla y el pimiento 6 minutos. Añade el ajo 1 minuto. Fuera del fuego, añade el pimentón y el tomate. Cocina 3 minutos hasta que el tomate se oscurezca.", minutes: 10, appliance: "vitro" },
       { text: "Añade el arroz, nacara 1 minuto y vierte 850 ml del caldo o agua caliente. Cuece 12 minutos a fuego medio, removiendo de vez en cuando.", minutes: 13, appliance: "vitro" },
       { text: "Añade los guisantes y, 2 minutos después, los dados de merluza hundiéndolos ligeramente. Cuece 4-5 minutos más sin remover (para no romper el pescado), moviendo la cazuela en vaivén. El pescado está listo cuando está blanco opaco por dentro.", minutes: 6, appliance: "vitro" },
       { text: "Separa la ración del bebé. Sala el resto, espolvorea perejil y deja reposar 2 minutos." },
@@ -236,8 +228,8 @@ export const arrozPastaRecipes: Recipe[] = [
     category: "arroz-pasta",
     summary: "Cuscús esponjoso con verduras guisadas en salsa especiada suave y garbanzos.",
     image: null,
-    prepMinutes: 15,
-    cookMinutes: 30,
+    prepMinutes: 10,
+    cookMinutes: 25,
     servings: 3,
     ingredients: [
       ing("cuscus", 200, "g"),
@@ -255,8 +247,8 @@ export const arrozPastaRecipes: Recipe[] = [
     ],
     steps: [
       { text: "Aclara los garbanzos en un colador bajo el grifo durante 1 minuto hasta que no quede espuma y déjalos escurrir. Pela la zanahoria y la calabaza y córtalas en dados de 2 cm; corta el calabacín igual y la cebolla en juliana." },
-      { text: "En una cazuela con 2 cucharadas de aceite a fuego medio (5 de 9), sofríe la cebolla 8 minutos. Añade el comino y la cúrcuma y remueve 30 segundos. Añade el tomate y cocina 3 minutos.", minutes: 12, appliance: "vitro" },
-      { text: "Añade la zanahoria y 500 ml de agua. Cuece 10 minutos. Añade la calabaza, el calabacín y los garbanzos y cuece 10-12 minutos más, hasta que todas las verduras estén tiernas al pincharlas. Debe quedar con bastante caldo.", minutes: 22, appliance: "vitro" },
+      { text: "En una cazuela con 2 cucharadas de aceite a fuego medio (5 de 9), sofríe la cebolla 5 minutos. Añade el comino y la cúrcuma y remueve 30 segundos. Añade el tomate y cocina 2 minutos.", minutes: 8, appliance: "vitro" },
+      { text: "Añade la zanahoria en rodajas finas, la calabaza, el calabacín y 500 ml de agua caliente. Cuece tapado 12 minutos y añade los garbanzos 3 minutos más, hasta que todas las verduras estén tiernas al pincharlas. Debe quedar con bastante caldo.", minutes: 15, appliance: "vitro" },
       { text: "Para el cuscús: pon el cuscús en un bol con 1 cucharada de aceite y frótalo con los dedos. Vierte por encima 220 ml (el mismo volumen que el cuscús) del caldo caliente de las verduras o agua hirviendo, tapa con un plato y deja reposar 5 minutos." },
       { text: "Destapa y separa los granos con un tenedor, añadiendo la mantequilla si quieres. Debe quedar suelto y esponjoso." },
       { text: "Separa la ración del bebé. Sala el resto de las verduras y sirve el cuscús con las verduras y su caldo por encima." },

@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Baby, Clock, Flame, Gauge, Snowflake, Users, Refrigerator } from "lucide-react";
+import { ArrowLeft, Baby, Clock, Flame, Gauge, Lightbulb, Microwave, Snowflake, Users, Refrigerator, CookingPot, ShieldAlert } from "lucide-react";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { RecipeImage } from "@/components/RecipeImage";
 import { CATEGORY_BY_ID } from "@/data/categories";
 import { getRecipe, RECIPES, totalMinutes } from "@/data/recipes";
 import { describeIngredient } from "@/lib/format";
+import { PRESSURE_SAFETY } from "@/data/recipes/helpers";
+import type { Appliance } from "@/data/types";
+
+const APPLIANCE_LABEL: Record<Appliance, string> = {
+  vitro: "Vitro",
+  horno: "Horno",
+  "olla-rapida": "Olla rápida",
+  microondas: "Microondas",
+};
+const APPLIANCE_ICON = { vitro: Flame, horno: CookingPot, "olla-rapida": Gauge, microondas: Microwave } as const;
 import { formatMinutes } from "@/lib/text";
 
 export function generateStaticParams() {
@@ -54,6 +64,14 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
             <dd className="font-semibold">{formatMinutes(totalMinutes(recipe))}</dd>
           </div>
         </dl>
+        {recipe.pressureCooker && (
+          <p className="flex items-center gap-2 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-800">
+            <Gauge className="h-5 w-5 shrink-0" aria-hidden />
+            <span>
+              <strong>Olla rápida:</strong> {recipe.pressureCooker.minutesAtPressure} min desde que sube la presión ({recipe.pressureCooker.pressure}) · liberación {recipe.pressureCooker.release}. Los tiempos ya lo incluyen.
+            </span>
+          </p>
+        )}
       </header>
 
       <section className="rounded-3xl bg-white p-5 ring-1 ring-brand-900/5">
@@ -81,8 +99,14 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-700 text-sm font-semibold text-cream">{i + 1}</span>
               <div className="space-y-1">
                 <p className="leading-relaxed">{step.text}</p>
-                {step.minutes && (
-                  <p className="flex items-center gap-1 text-xs text-stone-500"><Flame className="h-3.5 w-3.5" aria-hidden /> {formatMinutes(step.minutes)}</p>
+                {(step.minutes || step.appliance) && (
+                  <p className="flex items-center gap-3 text-xs text-stone-500">
+                    {step.appliance && (() => {
+                      const Icon = APPLIANCE_ICON[step.appliance];
+                      return <span className="flex items-center gap-1"><Icon className="h-3.5 w-3.5" aria-hidden /> {APPLIANCE_LABEL[step.appliance]}</span>;
+                    })()}
+                    {step.minutes && <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" aria-hidden /> {formatMinutes(step.minutes)}</span>}
+                  </p>
                 )}
               </div>
             </li>
@@ -91,16 +115,16 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
       </section>
 
       {recipe.pressureCooker && (
-        <section className="rounded-3xl bg-brand-50 p-5">
-          <h2 className="mb-2 flex items-center gap-2 font-serif text-xl font-semibold text-brand-800">
-            <Gauge className="h-5 w-5" aria-hidden /> En olla rápida
-          </h2>
-          <p className="mb-3 text-sm text-brand-800">
-            {recipe.pressureCooker.minutesAtPressure} min desde que alcanza presión {recipe.pressureCooker.pressure} · liberación {recipe.pressureCooker.release}
-          </p>
-          <ol className="list-decimal space-y-2 pl-5">
-            {recipe.pressureCooker.steps.map((s, i) => <li key={i}>{s}</li>)}
-          </ol>
+        <section className="flex gap-3 rounded-3xl bg-brand-50 p-5 text-sm text-brand-900">
+          <ShieldAlert className="h-5 w-5 shrink-0" aria-hidden />
+          <p><strong>Seguridad con la olla rápida.</strong> {PRESSURE_SAFETY}</p>
+        </section>
+      )}
+
+      {recipe.alternative && (
+        <section className="flex gap-3 rounded-3xl bg-white p-5 text-sm ring-1 ring-brand-900/5">
+          <Lightbulb className="h-5 w-5 shrink-0 text-amber-500" aria-hidden />
+          <p>{recipe.alternative}</p>
         </section>
       )}
 

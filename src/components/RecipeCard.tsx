@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock } from "lucide-react";
+import { Clock, Gauge } from "lucide-react";
 import { CATEGORY_BY_ID } from "@/data/categories";
 import { totalMinutes } from "@/data/recipes";
 import type { Recipe } from "@/data/types";
@@ -26,9 +26,16 @@ export function RecipeCard({ recipe, priority }: { recipe: Recipe; priority?: bo
             {category.label}
           </span>
           <h2 className="font-serif text-lg font-semibold leading-snug text-ink">{recipe.name}</h2>
-          <p className="flex items-center gap-1.5 text-sm text-stone-500">
-            <Clock className="h-4 w-4" aria-hidden />
-            <span>{formatMinutes(totalMinutes(recipe))}</span>
+          <p className="flex items-center gap-3 text-sm text-stone-500">
+            <span className="flex items-center gap-1.5">
+              <Clock className="h-4 w-4" aria-hidden />
+              {formatMinutes(totalMinutes(recipe))}
+            </span>
+            {recipe.pressureCooker && (
+              <span className="flex items-center gap-1 text-brand-700">
+                <Gauge className="h-4 w-4" aria-hidden /> Olla rápida
+              </span>
+            )}
           </p>
         </div>
       </Link>
