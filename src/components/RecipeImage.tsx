@@ -7,6 +7,8 @@ interface Props {
   sizes: string;
   priority?: boolean;
   className?: string;
+  /** Muestra la autoría y licencia sobre la foto (en la ficha). */
+  showCredit?: boolean;
 }
 
 /**
@@ -14,7 +16,7 @@ interface Props {
  * marcador elegante (degradado + emoji de la categoría) identificado como
  * «Foto pendiente».
  */
-export function RecipeImage({ recipe, sizes, priority, className = "" }: Props) {
+export function RecipeImage({ recipe, sizes, priority, className = "", showCredit }: Props) {
   if (recipe.image) {
     return (
       <div className={`relative overflow-hidden bg-cream-dark ${className}`}>
@@ -26,6 +28,16 @@ export function RecipeImage({ recipe, sizes, priority, className = "" }: Props) 
           priority={priority}
           className="object-cover"
         />
+        {showCredit && (
+          <a
+            href={recipe.image.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-2 right-2 max-w-[80%] truncate rounded-full bg-black/45 px-2 py-0.5 text-[10px] text-white/90 backdrop-blur-sm"
+          >
+            Foto: {recipe.image.author} · {recipe.image.license}
+          </a>
+        )}
       </div>
     );
   }

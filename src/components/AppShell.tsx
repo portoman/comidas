@@ -19,7 +19,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Suspense>
         </div>
       </header>
-      <main className="pb-nav mx-auto w-full max-w-6xl flex-1 px-4 pt-4">{children}</main>
+      <main className="pb-nav mx-auto w-full max-w-6xl flex-1 px-4 pt-4">
+        {children}
+        <footer className="mt-10 border-t border-brand-900/10 pt-4 text-center text-xs text-stone-500">
+          Adaptaciones para el bebé orientativas: seguid siempre las indicaciones de vuestro pediatra ·{" "}
+          <Link href="/creditos" className="underline">
+            Créditos de las fotos
+          </Link>
+        </footer>
+      </main>
       <Suspense fallback={null}>
         <BottomNav />
       </Suspense>

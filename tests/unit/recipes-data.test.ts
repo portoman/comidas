@@ -1,3 +1,5 @@
+import { existsSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { INGREDIENTS } from "@/data/ingredients";
 import { RECIPES, getRecipe, totalMinutes } from "@/data/recipes";
@@ -75,6 +77,18 @@ describe("catálogo de recetas", () => {
     totals.forEach((t, i) => expect(t, RECIPES[i].id).toBeLessThanOrEqual(60));
     const upTo45 = totals.filter((t) => t <= 45).length;
     expect(upTo45).toBeGreaterThanOrEqual(23);
+  });
+
+  it("cada fotografía existe en /public y tiene autoría y licencia libre", () => {
+    for (const r of RECIPES) {
+      if (!r.image) continue;
+      const file = join(process.cwd(), "public", r.image.src);
+      expect(existsSync(file), r.image.src).toBe(true);
+      expect(statSync(file).size, r.image.src).toBeGreaterThan(10_000);
+      expect(r.image.author, r.id).not.toBe("");
+      expect(r.image.license, r.id).toMatch(/^(CC0|CC BY|Public domain)/i);
+      expect(r.image.sourceUrl, r.id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+    }
   });
 
   it("no repite fotografías entre recetas distintas", () => {

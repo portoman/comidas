@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Baby, Clock, Flame, Gauge, Lightbulb, Microwave, Snowflake, Users, Refrigerator, CookingPot, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Baby, Clock, Flame, Gauge, Lightbulb, Microwave, Snowflake, Refrigerator, CookingPot, ShieldAlert } from "lucide-react";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { RecipeImage } from "@/components/RecipeImage";
 import { CATEGORY_BY_ID } from "@/data/categories";
 import { getRecipe, RECIPES, totalMinutes } from "@/data/recipes";
-import { describeIngredient } from "@/lib/format";
+import { RecipeInteractive } from "@/components/RecipeInteractive";
 import { PRESSURE_SAFETY } from "@/data/recipes/helpers";
 import type { Appliance } from "@/data/types";
 
@@ -42,7 +42,7 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
       </Link>
 
       <div className="relative">
-        <RecipeImage recipe={recipe} priority sizes="(min-width: 768px) 768px, 100vw" className="aspect-[4/3] w-full rounded-3xl sm:aspect-[16/9]" />
+        <RecipeImage recipe={recipe} priority showCredit sizes="(min-width: 768px) 768px, 100vw" className="aspect-[4/3] w-full rounded-3xl sm:aspect-[16/9]" />
         <FavoriteButton recipeId={recipe.id} recipeName={recipe.name} className="absolute right-3 top-3" />
       </div>
 
@@ -74,22 +74,7 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
         )}
       </header>
 
-      <section className="rounded-3xl bg-white p-5 ring-1 ring-brand-900/5">
-        <h2 className="mb-1 font-serif text-xl font-semibold text-brand-800">Ingredientes</h2>
-        <p className="mb-3 flex items-center gap-1.5 text-sm text-stone-500">
-          <Users className="h-4 w-4" aria-hidden /> {recipe.servings} raciones · 2 adultos y un bebé
-          <span className="ml-1 text-xs">(selector de raciones en la fase 2)</span>
-        </p>
-        <ul className="divide-y divide-stone-100">
-          {recipe.ingredients.map((item) => (
-            <li key={item.id} className="py-2">
-              <span className="first-letter:uppercase">{describeIngredient(item)}</span>
-              {item.note && <span className="text-stone-500"> — {item.note}</span>}
-              {item.optional && <span className="ml-1 text-xs text-stone-400">(opcional)</span>}
-            </li>
-          ))}
-        </ul>
-      </section>
+      <RecipeInteractive recipe={recipe} />
 
       <section className="space-y-3">
         <h2 className="font-serif text-xl font-semibold text-brand-800">Preparación</h2>

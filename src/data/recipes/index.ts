@@ -1,4 +1,5 @@
 import type { Recipe } from "../types";
+import { PHOTOS } from "../photos";
 import { arrozPastaRecipes } from "./arroz-pasta";
 import { avesRecipes } from "./aves";
 import { carneRecipes } from "./carne";
@@ -16,7 +17,9 @@ export const RECIPES: Recipe[] = [
   ...huevosRecipes,
   ...arrozPastaRecipes,
   ...cremasRecipes,
-].sort((a, b) => a.number - b.number);
+]
+  .map((r) => ({ ...r, image: PHOTOS[r.id] ?? r.image }))
+  .sort((a, b) => a.number - b.number);
 
 const byId = new Map(RECIPES.map((r) => [r.id, r]));
 

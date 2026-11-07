@@ -1,5 +1,6 @@
 import { getIngredient } from "@/data/ingredients";
 import type { RecipeIngredient, Unit } from "@/data/types";
+import { scaleIngredient } from "./scale";
 
 const FRACTIONS: [number, string][] = [
   [0.25, "¼"],
@@ -54,7 +55,7 @@ export function describeIngredient(item: RecipeIngredient, factor = 1): string {
   if (item.unit === "al-gusto" || item.quantity === undefined) {
     return `${def.name} al gusto`;
   }
-  const qty = item.quantity * factor;
+  const qty = scaleIngredient(item, factor) ?? item.quantity;
   const q = formatQuantity(qty, item.unit);
   const label = unitLabel(item.unit, qty);
   // Con unidades «de recipiente» (diente, cucharada…) el nombre va en singular.

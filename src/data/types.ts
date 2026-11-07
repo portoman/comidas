@@ -102,11 +102,17 @@ export interface BabyAdaptation {
 }
 
 export interface RecipeImage {
+  /** Ruta local en /public/images/recipes. */
   src: string;
   alt: string;
-  /** Autoría y licencia, obligatoria si la imagen no es propia. */
-  credit?: string;
-  license?: string;
+  width: number;
+  height: number;
+  /** Autoría (obligatoria para licencias Creative Commons). */
+  author: string;
+  license: string;
+  licenseUrl?: string;
+  /** Página de origen de la imagen (p. ej. Wikimedia Commons). */
+  sourceUrl: string;
 }
 
 export interface Recipe {
