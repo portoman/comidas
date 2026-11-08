@@ -1,4 +1,4 @@
-import type { Aisle, IngredientDef } from "./types";
+import type { Aisle, IngredientDef, RecipeIngredient } from "./types";
 
 export const AISLE_LABELS: Record<Aisle, string> = {
   "fruta-verdura": "Fruta y verdura",
@@ -98,8 +98,41 @@ export const INGREDIENTS: Record<string, IngredientDef> = Object.fromEntries(
   list.map((i) => [i.id, i]),
 );
 
+/** Ingredientes propios de la familia (los define cada receta en `custom`). */
+let customIngredients: Record<string, IngredientDef> = {};
+
+export function setCustomIngredients(defs: IngredientDef[]) {
+  customIngredients = Object.fromEntries(defs.map((d) => [d.id, d]));
+}
+
+/** Catálogo + ingredientes propios. */
+export function allIngredients(): IngredientDef[] {
+  return [...list, ...Object.values(customIngredients).filter((d) => !INGREDIENTS[d.id])];
+}
+
+export function findIngredient(id: string): IngredientDef | undefined {
+  return INGREDIENTS[id] ?? customIngredients[id];
+}
+
+/** Definición de un ingrediente de una receta (del catálogo o propio). */
+export function resolveIngredient(ri: Pick<RecipeIngredient, "id" | "custom">): IngredientDef {
+  const def = INGREDIENTS[ri.id] ?? (ri.custom ? { id: ri.id, ...ri.custom } : customIngredients[ri.id]);
+  return def ?? { id: ri.id, name: ri.id, aisle: "despensa" };
+}
+
 export function getIngredient(id: string): IngredientDef {
-  const def = INGREDIENTS[id];
+  const def = findIngredient(id);
   if (!def) throw new Error(`Ingrediente desconocido: ${id}`);
   return def;
+}
+
+/** ID normalizado para un ingrediente propio: «Queso fresco» → «propio-queso-fresco». */
+export function customIngredientId(name: string): string {
+  const slug = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return `propio-${slug || "ingrediente"}`;
 }

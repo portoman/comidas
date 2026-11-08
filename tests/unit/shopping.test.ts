@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Recipe } from "@/data/types";
-import { getRecipe } from "@/data/recipes";
+import { getBaseRecipe as getRecipe } from "@/data/recipes";
 import {
   buildShoppingList,
   formatItemQuantity,

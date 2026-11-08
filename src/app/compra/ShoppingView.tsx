@@ -1,12 +1,14 @@
 "use client";
 
 import { CalendarDays, Check, ClipboardCopy, MessageCircle, Plus, RotateCcw, Share2, Trash2, X } from "lucide-react";
+import { recipeHref } from "@/lib/routes";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { RecipePicker } from "@/components/RecipePicker";
 import { ServingsStepper } from "@/components/ServingsStepper";
 import { Sheet } from "@/components/Sheet";
-import { getRecipe } from "@/data/recipes";
+import { getRecipe } from "@/lib/recipes-store";
+import { useRecipes } from "@/hooks/useRecipes";
 import { useHydrated } from "@/hooks/useHydrated";
 import { useMenu, useShopping } from "@/hooks/useStores";
 import {
@@ -23,6 +25,7 @@ import { EMPTY_SHOPPING, type ShoppingState } from "@/lib/shopping-store";
 
 export function ShoppingView() {
   const hydrated = useHydrated();
+  const recipes = useRecipes();
   const [state, setState] = useShopping();
   const [menu] = useMenu();
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -34,7 +37,8 @@ export function ShoppingView() {
   const removed = useMemo(() => new Set(state.removed), [state.removed]);
   const items = useMemo(
     () => [...buildShoppingList(state.selections), ...state.manual.map(manualToItem)].filter((i) => !removed.has(i.key)),
-    [state.selections, state.manual, removed],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- recipes: recalcular si se edita una receta
+    [state.selections, state.manual, removed, recipes],
   );
   const groups = groupByAisle(items);
   const pendingCount = items.filter((i) => !checked.has(i.key)).length;
@@ -116,7 +120,7 @@ export function ShoppingView() {
             return (
               <li key={`${sel.recipeId}-${i}`} className="space-y-2 py-3">
                 <div className="flex items-start justify-between gap-2">
-                  <Link href={`/recetas/${recipe.id}`} className="font-medium leading-snug">
+                  <Link href={recipeHref(recipe.id)} className="font-medium leading-snug">
                     {recipe.name}
                   </Link>
                   <button

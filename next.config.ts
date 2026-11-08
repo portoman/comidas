@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    // Enlaces antiguos de las fichas (/recetas/<id>).
+    return [{ source: "/recetas/:id", destination: "/receta?id=:id", permanent: false }];
+  },
   async headers() {
     return [
       {

@@ -1,15 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/storage";
+import { favoritesStore } from "@/lib/favorites-store";
 
-const EMPTY: string[] = [];
-
-export const favoritesStore = createLocalStore<string[]>(
-  "recetario:favoritos:v1",
-  EMPTY,
-  (raw) => (Array.isArray(raw) ? raw.filter((x): x is string => typeof x === "string") : null),
-);
+export { favoritesStore };
 
 export function useFavorites() {
   const ids = useSyncExternalStore(

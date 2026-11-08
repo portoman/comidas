@@ -1,13 +1,16 @@
 "use client";
 
 import { Archive, CalendarPlus, Copy, Eraser, History, Plus, Repeat, Save, ShoppingCart, Trash2, X } from "lucide-react";
+import { recipeHref } from "@/lib/routes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RecipePicker } from "@/components/RecipePicker";
 import { ServingsStepper } from "@/components/ServingsStepper";
 import { Sheet } from "@/components/Sheet";
-import { getRecipe, totalMinutes } from "@/data/recipes";
+import { totalMinutes } from "@/data/recipes";
+import { getRecipe } from "@/lib/recipes-store";
+import { useRecipes } from "@/hooks/useRecipes";
 import { useHydrated } from "@/hooks/useHydrated";
 import { useMenu, useShopping } from "@/hooks/useStores";
 import {
@@ -38,6 +41,7 @@ const slotLabel = (id: SlotId) => {
 export function MenuView() {
   const hydrated = useHydrated();
   const router = useRouter();
+  useRecipes(); // vuelve a pintar si cambian las recetas
   const [menu, setMenu] = useMenu();
   const [, setShopping] = useShopping();
   const [picking, setPicking] = useState<SlotId | null>(null);
@@ -97,7 +101,7 @@ export function MenuView() {
                     ) : value.leftoverOf ? (
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <Link href={`/recetas/${recipe.id}`} className="font-medium leading-snug">{recipe.name}</Link>
+                          <Link href={recipeHref(recipe.id)} className="font-medium leading-snug">{recipe.name}</Link>
                           <p className="mt-0.5 flex items-center gap-1 text-xs text-brand-700">
                             <Repeat className="h-3.5 w-3.5" aria-hidden /> Sobras de {slotLabel(value.leftoverOf).toLowerCase()} · no se cocina
                           </p>
@@ -110,7 +114,7 @@ export function MenuView() {
                       <div className="space-y-2">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <Link href={`/recetas/${recipe.id}`} className="font-medium leading-snug">{recipe.name}</Link>
+                            <Link href={recipeHref(recipe.id)} className="font-medium leading-snug">{recipe.name}</Link>
                             <p className="text-xs text-stone-500">{formatMinutes(totalMinutes(recipe))}</p>
                           </div>
                           <button type="button" onClick={() => update((m) => setSlot(m, slot.id, null))} aria-label={`Quitar receta de ${slotLabel(slot.id)}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-stone-400 hover:bg-white">

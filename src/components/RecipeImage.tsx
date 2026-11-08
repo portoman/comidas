@@ -18,8 +18,22 @@ interface Props {
  */
 export function RecipeImage({ recipe, sizes, priority, className = "", showCredit }: Props) {
   if (recipe.image) {
+    // Las fotos subidas por la familia (Supabase o, en modo local, data:) ya
+    // vienen reducidas: se muestran tal cual.
+    const uploaded = /^(https?:|data:|blob:)/.test(recipe.image.src);
     return (
       <div className={`relative overflow-hidden bg-cream-dark ${className}`}>
+        {uploaded ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={recipe.image.src}
+            alt={recipe.image.alt}
+            crossOrigin={recipe.image.src.startsWith("http") ? "anonymous" : undefined}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
         <Image
           src={recipe.image.src}
           alt={recipe.image.alt}
@@ -28,7 +42,8 @@ export function RecipeImage({ recipe, sizes, priority, className = "", showCredi
           priority={priority}
           className="object-cover"
         />
-        {showCredit && (
+        )}
+        {showCredit && recipe.image.sourceUrl && (
           <a
             href={recipe.image.sourceUrl}
             target="_blank"

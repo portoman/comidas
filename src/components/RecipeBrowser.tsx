@@ -4,17 +4,21 @@ import { Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { CATEGORIES } from "@/data/categories";
 import type { CategoryId, Recipe } from "@/data/types";
+import { useRecipes } from "@/hooks/useRecipes";
 import { filterRecipes } from "@/lib/search";
 import { RecipeCard } from "./RecipeCard";
 
 interface Props {
-  recipes: Recipe[];
+  /** Por defecto, todas las recetas de la familia. */
+  recipes?: Recipe[];
   /** Si se indica, restringe a estos IDs (para la pantalla de favoritos). */
   onlyIds?: ReadonlySet<string>;
   emptyMessage?: string;
 }
 
-export function RecipeBrowser({ recipes, onlyIds, emptyMessage }: Props) {
+export function RecipeBrowser({ recipes: given, onlyIds, emptyMessage }: Props) {
+  const all = useRecipes();
+  const recipes = given ?? all;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryId | "todas">("todas");
 

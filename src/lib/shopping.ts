@@ -1,5 +1,5 @@
-import { AISLE_LABELS, AISLE_ORDER, INGREDIENTS } from "@/data/ingredients";
-import { getRecipe } from "@/data/recipes";
+import { AISLE_LABELS, AISLE_ORDER, allIngredients, resolveIngredient } from "@/data/ingredients";
+import { getRecipe } from "@/lib/recipes-store";
 import type { Aisle, Recipe, Unit } from "@/data/types";
 import { formatQuantity, unitLabel } from "./format";
 import type { Week } from "./menu-store";
@@ -78,8 +78,7 @@ export function buildShoppingList(
     const factor = sel.servings / recipe.servings;
     for (const ri of recipe.ingredients) {
       if (ri.optional && !options.includeOptional) continue;
-      const def = INGREDIENTS[ri.id];
-      if (!def) continue;
+      const def = resolveIngredient(ri);
       let item = items.get(ri.id);
       if (!item) {
         item = { key: ri.id, name: def.plural ?? def.name, aisle: def.aisle, amounts: [], recipes: [] };
@@ -136,7 +135,7 @@ export function formatItemQuantity(item: ShoppingItem): string {
 export function guessAisle(name: string): Aisle | "otros" {
   const n = normalizeText(name);
   if (!n) return "otros";
-  for (const def of Object.values(INGREDIENTS)) {
+  for (const def of allIngredients()) {
     const names = [def.name, def.plural ?? "", ...(def.synonyms ?? [])].map(normalizeText).filter(Boolean);
     if (names.some((x) => x === n || x.split(" ")[0] === n || n.startsWith(x))) return def.aisle;
   }

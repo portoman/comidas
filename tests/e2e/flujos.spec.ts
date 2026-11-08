@@ -33,14 +33,14 @@ test("busca, filtra y abre una ficha", async ({ page }) => {
 });
 
 test("ajusta raciones y añade a la compra; la lista suma ingredientes", async ({ page }) => {
-  await page.goto("/recetas/pollo-guisado-patatas-guisantes");
+  await page.goto("/receta?id=pollo-guisado-patatas-guisantes");
   const first = page.getByTestId("ingredient-text").first();
   await expect(first).toHaveText("500 g de muslos de pollo");
   for (let i = 0; i < 3; i++) await page.getByRole("button", { name: /Añadir una ración/ }).click();
   await expect(first).toHaveText("1000 g de muslos de pollo");
   await page.getByRole("button", { name: "Añadir a la lista de la compra" }).click();
 
-  await page.goto("/recetas/gallo-horno-patatas");
+  await page.goto("/receta?id=gallo-horno-patatas");
   await page.getByRole("button", { name: "Añadir a la lista de la compra" }).click();
 
   await page.goto("/compra");
@@ -70,4 +70,54 @@ test("planifica la semana con sobras y genera la compra sin duplicar", async ({ 
   await expect(page).toHaveURL(/\/compra$/);
   await expect(page.locator("[data-key=lenteja-pardina] [data-testid=item-qty]")).toHaveText("400 g");
   expect(errors).toEqual([]);
+});
+
+test("crea una receta nueva y aparece en el recetario y en la compra", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/");
+  await page.getByRole("link", { name: "Nueva" }).click();
+  await expect(page.locator("h1:visible")).toHaveText("Nueva receta");
+  const form = page.locator("form:visible");
+  await form.getByLabel("Nombre", { exact: true }).fill("Crema de puerro y patata");
+  await form.getByLabel("Categoría").selectOption("cremas-verduras");
+  const search = form.getByLabel("Añadir ingrediente");
+  await search.fill("puerro");
+  await form.getByRole("button", { name: /^Puerro/ }).click();
+  await form.getByLabel("Cantidad de Puerro").fill("300");
+  await search.fill("Queso fresco batido");
+  await form.getByLabel("Sección del súper").selectOption("huevos-lacteos");
+  await form.getByRole("button", { name: "Añadir", exact: true }).click();
+  await form.getByLabel("Cantidad de Queso fresco batido").fill("100");
+  await form.getByLabel("Paso 1", { exact: true }).fill("Cuece el puerro 15 minutos y tritura con el queso.");
+  await form.getByRole("button", { name: "Guardar receta" }).click();
+
+  await expect(page.locator("h1:visible")).toHaveText("Crema de puerro y patata");
+  await expect(page.getByTestId("ingredient-text").nth(1)).toHaveText("100 g de queso fresco batido");
+  await page.getByRole("button", { name: "Añadir a la lista de la compra" }).click();
+
+  await page.goto("/");
+  await expect(page.getByTestId("recipe-card")).toHaveCount(26);
+  await page.goto("/compra");
+  await expect(page.locator("[data-key=propio-queso-fresco-batido] [data-testid=item-qty]")).toHaveText("100 g");
+  expect(errors).toEqual([]);
+});
+
+test("edita una receta incluida y vuelve a la original", async ({ page }) => {
+  await page.goto("/receta?id=lentejas-arroz");
+  await page.getByRole("link", { name: "Editar" }).click();
+  await page.locator("form:visible").getByLabel("Nombre", { exact: true }).fill("Lentejas de la abuela");
+  await page.locator("form:visible").getByRole("button", { name: "Guardar receta" }).click();
+  await expect(page.locator("h1:visible")).toHaveText("Lentejas de la abuela");
+  await expect(page.getByText("Editada por la familia")).toBeVisible();
+
+  page.once("dialog", (d) => void d.accept());
+  await page.getByRole("link", { name: "Editar" }).click();
+  await page.locator("form:visible").getByRole("button", { name: "Volver a la original" }).click();
+  await expect(page.locator("h1:visible")).toHaveText("Lentejas con arroz");
+});
+
+test("los enlaces antiguos de las fichas siguen funcionando", async ({ page }) => {
+  await page.goto("/recetas/lentejas-arroz");
+  await expect(page).toHaveURL(/\/receta\?id=lentejas-arroz$/);
+  await expect(page.locator("h1:visible")).toHaveText("Lentejas con arroz");
 });

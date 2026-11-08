@@ -1,10 +1,11 @@
 /* Service worker del Recetario Familiar.
- * - Al instalarse guarda todas las páginas (inicio, menú, compra, favoritos
- *   y las fichas de las recetas) y los archivos JS/CSS que usan.
+ * - Al instalarse guarda todas las páginas (inicio, menú, compra, favoritos,
+ *   la ficha /receta y el editor) y los archivos JS/CSS que usan.
+ * - Las fotos subidas por la familia (Supabase Storage) se guardan al verlas.
  * - Navegación: primero red; sin conexión, la copia guardada.
  * - Archivos estáticos de Next (/_next/static) e imágenes: primero caché.
  */
-const VERSION = "v2";
+const VERSION = "v3";
 const PAGES = `recetario-paginas-${VERSION}`;
 const ASSETS = `recetario-estaticos-${VERSION}`;
 
@@ -86,6 +87,11 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
   const url = new URL(request.url);
+  // Fotos subidas por la familia: primero caché (cada foto tiene URL única).
+  if (url.pathname.startsWith("/storage/v1/object/public/fotos/")) {
+    event.respondWith(cacheFirst(request));
+    return;
+  }
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/icons/") || url.pathname.startsWith("/images/") || url.pathname.startsWith("/_next/image")) {

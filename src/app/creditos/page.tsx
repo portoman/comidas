@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { recipeHref } from "@/lib/routes";
 import Link from "next/link";
 import { RECIPES } from "@/data/recipes";
 
@@ -17,7 +18,7 @@ export default function CreditsPage() {
       <ul className="divide-y divide-stone-100 rounded-3xl bg-white ring-1 ring-brand-900/5">
         {withPhoto.map((r) => (
           <li key={r.id} className="space-y-0.5 px-5 py-3 text-sm">
-            <Link href={`/recetas/${r.id}`} className="font-medium text-ink">
+            <Link href={recipeHref(r.id)} className="font-medium text-ink">
               {r.name}
             </Link>
             <p className="text-stone-600">

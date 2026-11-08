@@ -2,7 +2,7 @@ import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { INGREDIENTS } from "@/data/ingredients";
-import { RECIPES, getRecipe, totalMinutes } from "@/data/recipes";
+import { RECIPES, getBaseRecipe as getRecipe, totalMinutes } from "@/data/recipes";
 import { CATEGORY_BY_ID } from "@/data/categories";
 import { normalizeText } from "@/lib/text";
 
