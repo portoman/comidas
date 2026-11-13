@@ -151,6 +151,12 @@ create policy "familia sube fotos" on storage.objects
   for insert to authenticated
   with check (bucket_id = 'fotos' and public.is_member(((storage.foldername(name))[1])::uuid));
 
+-- (Borrar exige poder «ver» la fila del archivo.)
+drop policy if exists "familia ve sus fotos" on storage.objects;
+create policy "familia ve sus fotos" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'fotos' and public.is_member(((storage.foldername(name))[1])::uuid));
+
 drop policy if exists "familia borra fotos" on storage.objects;
 create policy "familia borra fotos" on storage.objects
   for delete to authenticated
