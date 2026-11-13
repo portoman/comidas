@@ -8,7 +8,7 @@ import { useMenu, useShopping } from "@/hooks/useStores";
 import { describeIngredient } from "@/lib/format";
 import { DAYS, mondayOf, newWeek, setSlot, SLOTS, type SlotId } from "@/lib/menu-store";
 import { addToShopping } from "@/lib/shopping-store";
-import { getRecipe } from "@/data/recipes";
+import { getRecipe } from "@/lib/recipes-store";
 import { ServingsStepper } from "./ServingsStepper";
 import { Sheet } from "./Sheet";
 

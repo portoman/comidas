@@ -19,7 +19,16 @@ inicio y funciona sin conexión.
 - **Menú semanal**: cenas de lunes a viernes y comidas y cenas el fin de semana;
   «cocinar doble» para usar una preparación dos días sin duplicar la compra;
   guardar, limpiar, nueva semana y recuperar menús anteriores.
-- **Favoritos**, menús y compra se guardan en el navegador (localStorage).
+- **Editar recetas y añadir nuevas**: nombre, tiempos, ingredientes (del
+  catálogo o propios, con su sección del súper), pasos, olla rápida,
+  adaptación para el bebé, conservación y foto hecha con el móvil. Las recetas
+  incluidas se pueden ocultar o volver a su versión original.
+- **Cuenta familiar (Supabase)**: login con email y contraseña; recetas,
+  favoritos, menú y compra compartidos entre los móviles de la familia en tiempo
+  real. Sin conexión se consulta lo último guardado y los cambios de menú,
+  compra y favoritos se suben al volver la conexión.
+- Sin Supabase configurado, la app funciona en **modo local** (todo en el
+  navegador).
 - **PWA**: manifest, iconos y service worker que guarda todas las recetas para
   usarlas sin conexión.
 
@@ -35,17 +44,41 @@ npm run test:e2e   # Pruebas de extremo a extremo con viewport de iPhone (Playwr
 Para las pruebas de extremo a extremo en tu ordenador, instala una vez el
 navegador de Playwright: `npx playwright install chromium`.
 
+## Base de datos y login (Supabase, gratis)
+
+1. Crea una cuenta en [supabase.com](https://supabase.com) → **New project**
+   (región: West EU / Frankfurt o Irlanda). Guarda la contraseña de la base de datos.
+2. **SQL Editor → New query**: pega el contenido de
+   [`supabase/schema.sql`](supabase/schema.sql) y pulsa **Run**.
+3. **Authentication → Sign In / Providers → Email**: deja activado Email y
+   desactiva **Allow new users to sign up** (solo entra quien invitéis) y
+   **Confirm email**.
+4. **Authentication → Users → Add user → Create new user**: crea una cuenta por
+   persona (email + contraseña, marca *Auto Confirm User*). Todas entran en la
+   misma familia.
+5. **Project Settings → API Keys** (o botón **Connect**): copia la *Project
+   URL* y la *Publishable key*.
+6. En Vercel → **Settings → Environment Variables** añade
+   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` y vuelve a
+   desplegar (**Deployments → ⋯ → Redeploy**). Para desarrollo, cópialas en
+   `.env.local` (ver `.env.example`).
+
+> El plan gratuito de Supabase pausa el proyecto tras 7 días sin uso; se
+> reactiva desde su panel sin perder datos.
+
 ## Despliegue en Vercel
 
-1. En vercel.com → **Add New → Project**, elige este repositorio.
-2. Vercel detecta Next.js; no hace falta configurar nada más.
+1. En vercel.com → **Add New → Project**, elige este repositorio
+   (Framework Preset: **Next.js**).
+2. Añade las variables de Supabase del apartado anterior.
 3. Abre la URL en Safari del iPhone → **Compartir → Añadir a pantalla de inicio**.
 
 ## Estructura
 
 ```
 src/
-  app/               Rutas: /, /recetas/[id], /menu, /compra, /favoritos, /creditos
+  app/               Rutas: /, /receta?id=…, /receta/editar, /receta/nueva,
+                     /menu, /compra, /favoritos, /cuenta, /creditos
   components/        Componentes visuales reutilizables
   data/
     types.ts         Modelo de datos (Recipe, RecipeIngredient, Unit…)
@@ -54,7 +87,10 @@ src/
     photos.ts        Fotos (Wikimedia Commons) con autoría y licencia
     recipes/         Recetas por categoría (datos puros, sin JSX)
   hooks/             Estado en el cliente sobre localStorage (sin errores de hidratación)
-  lib/               Lógica pura: búsqueda, escalado, lista de la compra, menú
+  lib/               Lógica: búsqueda, escalado, lista de la compra, menú,
+                     recetas de la familia (recipes-store) y nube (cloud/)
+supabase/
+  schema.sql         Tablas, seguridad (RLS), tiempo real y almacén de fotos
 public/
   images/recipes/    Fotografías de los platos
   icons/             Iconos de la app
@@ -64,7 +100,10 @@ tests/
   e2e/               Playwright (iPhone)
 ```
 
-## Añadir una receta
+## Añadir una receta al código
+
+Desde la app se pueden añadir recetas con **Nueva receta**. Para incluir una
+receta de serie en el código:
 
 1. Añade los ingredientes nuevos a `src/data/ingredients.ts` (ID en kebab-case,
    singular, con su sección del súper).

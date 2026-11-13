@@ -51,8 +51,13 @@ export interface IngredientDef {
 }
 
 export interface RecipeIngredient {
-  /** Debe existir en el catálogo de ingredientes. */
+  /**
+   * Debe existir en el catálogo de ingredientes, salvo los ingredientes
+   * propios (añadidos por la familia), que llevan su definición en `custom`.
+   */
   id: string;
+  /** Ingrediente que no está en el catálogo: nombre y sección del súper. */
+  custom?: { name: string; plural?: string; aisle: Aisle };
   quantity?: number;
   unit: Unit;
   /** Indicación de preparación o equivalencia: «en dados de 2 cm». */
@@ -102,7 +107,7 @@ export interface BabyAdaptation {
 }
 
 export interface RecipeImage {
-  /** Ruta local en /public/images/recipes. */
+  /** Ruta local en /public/images/recipes, o URL de una foto subida por la familia. */
   src: string;
   alt: string;
   width: number;
@@ -111,13 +116,13 @@ export interface RecipeImage {
   author: string;
   license: string;
   licenseUrl?: string;
-  /** Página de origen de la imagen (p. ej. Wikimedia Commons). */
+  /** Página de origen de la imagen (p. ej. Wikimedia Commons); vacía en fotos propias. */
   sourceUrl: string;
 }
 
 export interface Recipe {
   id: string;
-  /** Número correlativo del catálogo original (1-25). */
+  /** Número correlativo (1-25 las originales; las nuevas, a continuación). */
   number: number;
   name: string;
   category: CategoryId;

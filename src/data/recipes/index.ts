@@ -8,7 +8,11 @@ import { huevosRecipes } from "./huevos";
 import { legumbresRecipes } from "./legumbres";
 import { pescadoRecipes } from "./pescado";
 
-/** Catálogo completo, ordenado por número de receta. */
+/**
+ * Las 25 recetas incluidas en la app, ordenadas por número. La familia puede
+ * editarlas, ocultarlas o añadir otras: la lista final la da
+ * `src/lib/recipes-store.ts` (useRecipes / getRecipe).
+ */
 export const RECIPES: Recipe[] = [
   ...avesRecipes,
   ...carneRecipes,
@@ -23,7 +27,7 @@ export const RECIPES: Recipe[] = [
 
 const byId = new Map(RECIPES.map((r) => [r.id, r]));
 
-export function getRecipe(id: string): Recipe | undefined {
+export function getBaseRecipe(id: string): Recipe | undefined {
   return byId.get(id);
 }
 

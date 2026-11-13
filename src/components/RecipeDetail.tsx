@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowLeft, Baby, Clock, Flame, Gauge, Lightbulb, Microwave, Snowflake, Refrigerator, CookingPot, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Baby, Clock, Flame, Gauge, Lightbulb, Microwave, Pencil, Snowflake, Refrigerator, CookingPot, ShieldAlert } from "lucide-react";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { RecipeImage } from "@/components/RecipeImage";
 import { CATEGORY_BY_ID } from "@/data/categories";
-import { getRecipe, RECIPES, totalMinutes } from "@/data/recipes";
+import { totalMinutes } from "@/data/recipes";
 import { RecipeInteractive } from "@/components/RecipeInteractive";
 import { PRESSURE_SAFETY } from "@/data/recipes/helpers";
-import type { Appliance } from "@/data/types";
+import type { Appliance, Recipe } from "@/data/types";
+import { formatMinutes } from "@/lib/text";
 
 const APPLIANCE_LABEL: Record<Appliance, string> = {
   vitro: "Vitro",
@@ -17,29 +18,24 @@ const APPLIANCE_LABEL: Record<Appliance, string> = {
   microondas: "Microondas",
 };
 const APPLIANCE_ICON = { vitro: Flame, horno: CookingPot, "olla-rapida": Gauge, microondas: Microwave } as const;
-import { formatMinutes } from "@/lib/text";
 
-export function generateStaticParams() {
-  return RECIPES.map((r) => ({ id: r.id }));
-}
-
-export async function generateMetadata({ params }: PageProps<"/recetas/[id]">): Promise<Metadata> {
-  const { id } = await params;
-  const recipe = getRecipe(id);
-  return { title: recipe?.name ?? "Receta no encontrada" };
-}
-
-export default async function RecipePage({ params }: PageProps<"/recetas/[id]">) {
-  const { id } = await params;
-  const recipe = getRecipe(id);
-  if (!recipe) notFound();
+/** Ficha completa de una receta. */
+export function RecipeDetail({ recipe, edited }: { recipe: Recipe; edited?: boolean }) {
   const category = CATEGORY_BY_ID[recipe.category];
 
   return (
     <article className="mx-auto max-w-3xl space-y-6">
-      <Link href="/" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700">
-        <ArrowLeft className="h-4 w-4" aria-hidden /> Recetas
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700">
+          <ArrowLeft className="h-4 w-4" aria-hidden /> Recetas
+        </Link>
+        <Link
+          href={`/receta/editar?id=${encodeURIComponent(recipe.id)}`}
+          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-brand-700 ring-1 ring-brand-900/10"
+        >
+          <Pencil className="h-4 w-4" aria-hidden /> Editar
+        </Link>
+      </div>
 
       <div className="relative">
         <RecipeImage recipe={recipe} priority showCredit sizes="(min-width: 768px) 768px, 100vw" className="aspect-[4/3] w-full rounded-3xl sm:aspect-[16/9]" />
@@ -48,6 +44,9 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
 
       <header className="space-y-3">
         <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700">{category.label}</span>
+        {edited && (
+          <span className="ml-2 inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">Editada por la familia</span>
+        )}
         <h1 className="font-serif text-3xl font-semibold leading-tight text-brand-800">{recipe.name}</h1>
         <p className="text-stone-600">{recipe.summary}</p>
         <dl className="grid grid-cols-3 gap-2 text-center text-sm">
@@ -113,19 +112,27 @@ export default async function RecipePage({ params }: PageProps<"/recetas/[id]">)
         </section>
       )}
 
+      {(recipe.baby.texture || recipe.baby.howTo.length > 0 || recipe.baby.warnings.length > 0) && (
       <section className="rounded-3xl bg-amber-50 p-5 ring-1 ring-amber-200/60">
         <h2 className="mb-2 flex items-center gap-2 font-serif text-xl font-semibold text-amber-900">
           <Baby className="h-5 w-5" aria-hidden /> Para el bebé
         </h2>
-        <p className="mb-3"><strong>Textura:</strong> {recipe.baby.texture}</p>
-        <ul className="mb-3 list-disc space-y-1 pl-5">
-          {recipe.baby.howTo.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
-        <h3 className="mb-1 font-semibold text-amber-900">Precauciones</h3>
-        <ul className="list-disc space-y-1 pl-5 text-sm">
-          {recipe.baby.warnings.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
+        {recipe.baby.texture && <p className="mb-3"><strong>Textura:</strong> {recipe.baby.texture}</p>}
+        {recipe.baby.howTo.length > 0 && (
+          <ul className="mb-3 list-disc space-y-1 pl-5">
+            {recipe.baby.howTo.map((s, i) => <li key={i}>{s}</li>)}
+          </ul>
+        )}
+        {recipe.baby.warnings.length > 0 && (
+          <>
+            <h3 className="mb-1 font-semibold text-amber-900">Precauciones</h3>
+            <ul className="list-disc space-y-1 pl-5 text-sm">
+              {recipe.baby.warnings.map((s, i) => <li key={i}>{s}</li>)}
+            </ul>
+          </>
+        )}
       </section>
+      )}
 
       <section className="rounded-3xl bg-white p-5 ring-1 ring-brand-900/5">
         <h2 className="mb-2 flex items-center gap-2 font-serif text-xl font-semibold text-brand-800">

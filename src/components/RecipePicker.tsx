@@ -2,7 +2,7 @@
 
 import { Check, Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import { RECIPES } from "@/data/recipes";
+import { useRecipes } from "@/hooks/useRecipes";
 import type { Recipe } from "@/data/types";
 import { filterRecipes } from "@/lib/search";
 
@@ -18,7 +18,8 @@ export function RecipePicker({
 }) {
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<string[]>([]);
-  const results = useMemo(() => filterRecipes(RECIPES, { query }), [query]);
+  const recipes = useRecipes();
+  const results = useMemo(() => filterRecipes(recipes, { query }), [recipes, query]);
 
   return (
     <div className="space-y-3">
@@ -66,7 +67,7 @@ export function RecipePicker({
           type="button"
           disabled={picked.length === 0}
           onClick={() => {
-            onPick(RECIPES.filter((r) => picked.includes(r.id)));
+            onPick(recipes.filter((r) => picked.includes(r.id)));
             setPicked([]);
           }}
           className="h-12 w-full rounded-2xl bg-brand-700 font-medium text-cream disabled:opacity-40"

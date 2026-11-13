@@ -17,3 +17,6 @@ vi.mock("next/image", () => ({
     return <img {...(rest as React.ImgHTMLAttributes<HTMLImageElement>)} />;
   },
 }));
+
+// jsdom no implementa scrollTo.
+window.scrollTo = () => {};

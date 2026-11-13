@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { RecipeInteractive } from "@/components/RecipeInteractive";
-import { getRecipe } from "@/data/recipes";
+import { getBaseRecipe as getRecipe } from "@/data/recipes";
 import { scaleIngredient } from "@/lib/scale";
 import { shoppingStore, EMPTY_SHOPPING } from "@/lib/shopping-store";
 import { menuStore, EMPTY_MENU } from "@/lib/menu-store";

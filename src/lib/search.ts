@@ -1,12 +1,11 @@
-import { INGREDIENTS } from "@/data/ingredients";
+import { resolveIngredient } from "@/data/ingredients";
 import type { CategoryId, Recipe } from "@/data/types";
 import { normalizeText } from "./text";
 
 /** Texto indexable de una receta: nombre, resumen e ingredientes (con sinónimos). */
 function searchableText(recipe: Recipe): string {
   const ingredientWords = recipe.ingredients.flatMap((ri) => {
-    const def = INGREDIENTS[ri.id];
-    if (!def) return [ri.id];
+    const def = resolveIngredient(ri);
     return [def.name, def.plural ?? "", ...(def.synonyms ?? [])];
   });
   return normalizeText(

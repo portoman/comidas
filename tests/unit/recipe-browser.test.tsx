@@ -11,7 +11,7 @@ describe("<RecipeBrowser />", () => {
     const cards = screen.getAllByTestId("recipe-card");
     expect(cards).toHaveLength(25);
     const first = within(cards[0]).getByRole("link");
-    expect(first).toHaveAttribute("href", "/recetas/pollo-guisado-patatas-guisantes");
+    expect(first).toHaveAttribute("href", "/receta?id=pollo-guisado-patatas-guisantes");
     expect(screen.getByText("25 recetas")).toBeInTheDocument();
   });
 

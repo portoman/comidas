@@ -1,4 +1,4 @@
-import { getIngredient } from "@/data/ingredients";
+import { resolveIngredient } from "@/data/ingredients";
 import type { RecipeIngredient, Unit } from "@/data/types";
 import { scaleIngredient } from "./scale";
 
@@ -51,7 +51,7 @@ export function unitLabel(unit: Unit, quantity: number): string {
 
 /** «600 g de Patatas», «2 dientes de ajo», «Sal al gusto». */
 export function describeIngredient(item: RecipeIngredient, factor = 1): string {
-  const def = getIngredient(item.id);
+  const def = resolveIngredient(item);
   if (item.unit === "al-gusto" || item.quantity === undefined) {
     return `${def.name} al gusto`;
   }

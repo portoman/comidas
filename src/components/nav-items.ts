@@ -9,7 +9,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/", label: "Recetas", icon: BookOpen, match: (p) => p === "/" || p.startsWith("/recetas") },
+  { href: "/", label: "Recetas", icon: BookOpen, match: (p) => p === "/" || p.startsWith("/receta") },
   { href: "/menu", label: "Menú semanal", icon: CalendarDays, match: (p) => p.startsWith("/menu") },
   { href: "/compra", label: "Compra", icon: ShoppingCart, match: (p) => p.startsWith("/compra") },
   { href: "/favoritos", label: "Favoritos", icon: Heart, match: (p) => p.startsWith("/favoritos") },

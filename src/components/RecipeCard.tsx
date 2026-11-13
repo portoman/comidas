@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { recipeHref } from "@/lib/routes";
 import { Clock, Gauge } from "lucide-react";
 import { CATEGORY_BY_ID } from "@/data/categories";
 import { totalMinutes } from "@/data/recipes";
@@ -14,7 +15,7 @@ export function RecipeCard({ recipe, priority }: { recipe: Recipe; priority?: bo
       data-testid="recipe-card"
       className="group relative overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-brand-900/5 transition hover:shadow-md"
     >
-      <Link href={`/recetas/${recipe.id}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
+      <Link href={recipeHref(recipe.id)} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
         <RecipeImage
           recipe={recipe}
           priority={priority}
